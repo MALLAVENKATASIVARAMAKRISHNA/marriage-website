@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Family Tree ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Cinzel+Decorative:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold: #c8830a;
+    --gold-light: #e8c97a;
+    --gold-pale: #fdf5e4;
+    --deep: #2b1a0e;
+    --warm: #5a2a08;
+    --cream: #fef9f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--deep);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 10px;
+    border: 2px solid var(--gold);
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #2b1a0e 0%, #5a2d12 50%, #2b1a0e 100%);
+    padding: 80px 20px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,151,58,0.15) 0%, transparent 70%);
+  }
+  .mandala-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(200,151,58,0.25);
+    animation: spin-slow linear infinite;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .mandala-ring:nth-child(1) { width: 420px; height: 420px; animation-duration: 60s; }
+  .mandala-ring:nth-child(2) { width: 300px; height: 300px; animation-duration: 40s; animation-direction: reverse; border-style: dashed; }
+  @keyframes spin-slow { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+  .hero-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1rem;
+    letter-spacing: 0.45em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.3s;
+  }
+  .hero-label::before, .hero-label::after { content: '✦'; margin: 0 10px; opacity: 0.6; }
+
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.5s;
+    margin-bottom: 12px;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: rgba(255,255,255,0.6);
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.7s;
+    margin-bottom: 28px;
+  }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200,151,58,0.15);
+    border: 1px solid rgba(200,151,58,0.45);
+    color: var(--gold-light);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: background 0.25s, color 0.25s;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.9s;
+  }
+  .back-btn:hover { background: var(--gold); color: var(--deep); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── TREE WRAPPER ── */
+  .tree-section {
+    padding: 70px 20px 100px;
+    background: var(--gold-pale);
+  }
+  .tree-section::before {
+    content: '🌳';
+    position: fixed;
+    font-size: 18rem;
+    opacity: 0.03;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .tree-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── GENERATION LABEL ── */
+  .gen-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 20px;
+    opacity: 1;
+  }
+
+  /* ── GENERATION ROW ── */
+  .gen-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  /* ── CONNECTOR LINES ── */
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .line-down {
+    width: 2px;
+    height: 36px;
+    background: linear-gradient(to bottom, var(--gold), rgba(200,151,58,0.4));
+  }
+  .line-h-wrap {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    margin-bottom: 0;
+  }
+  /* horizontal bar connecting children */
+  .line-h {
+    height: 2px;
+    background: linear-gradient(to right, rgba(200,151,58,0.2), var(--gold), rgba(200,151,58,0.2));
+    flex: 1;
+    max-width: 600px;
+    margin-top: 0;
+    align-self: flex-start;
+    margin-top: 0;
+  }
+
+  /* simple spacer between rows */
+  .gap { height: 36px; display: flex; align-items: center; justify-content: center; }
+  .gap .vline {
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(200,151,58,0.6), rgba(200,151,58,0.2));
+  }
+
+  /* ── PERSON CARD ── */
+  .person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+
+  .person-card {
+    background: white;
+    border: 1px solid rgba(200,151,58,0.3);
+    border-radius: 12px;
+    padding: 18px 16px 16px;
+    text-align: center;
+    width: 190px;
+    box-shadow: 0 4px 18px rgba(43,26,14,0.09);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: default;
+    position: relative;
+  }
+  .person-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(200,151,58,0.2);
+    border-color: var(--gold);
+  }
+
+  /* root couple card is bigger */
+  .person-card.root {
+    width: 210px;
+    border: 2px solid var(--gold);
+    background: linear-gradient(135deg, #fff8ec, #fffdf5);
+    box-shadow: 0 6px 28px rgba(200,151,58,0.18);
+  }
+
+  .person-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--gold-light);
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .person-card.root .person-avatar { width: 86px; height: 86px; border-color: var(--gold); }
+
+  .person-avatar-placeholder {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8d5b0, #d4b87a);
+    border: 3px solid var(--gold-light);
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+  }
+  .person-card.root .person-avatar-placeholder { width: 86px; height: 86px; font-size: 2.2rem; border-color: var(--gold); }
+
+  .person-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--deep);
+    line-height: 1.3;
+    margin-bottom: 4px;
+    word-break: break-word;
+  }
+  .person-card.root .person-name { font-size: 1.25rem; }
+
+  .person-role {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    word-break: break-word;
+  }
+
+  .person-year {
+    font-size: 0.78rem;
+    color: #5a3010;
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+    margin-top: 1px;
+  }
+
+  /* couple joined card */
+  .couple-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+  .heart-join {
+    width: 34px;
+    height: 34px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px var(--gold-pale), 0 0 0 5px rgba(200,151,58,0.3);
+    z-index: 1;
+  }
+
+  /* ── CHILDREN BRANCH ── */
+  .branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  /* horizontal line spanning children */
+  .h-connector {
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), var(--gold), transparent);
+    position: absolute;
+    top: 0;
+  }
+
+  /* ── GENERATION SECTIONS ── */
+  .gen-section {
+    margin-bottom: 8px;
+  }
+
+  /* full tree layout using flexbox columns */
+  .tree-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 20px 10px 10px;
+  }
+
+  /* ── LEVEL CONTAINERS ── */
+  .level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .level-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* branch group = one child + their spouse + their children */
+  .branch-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ── VERTICAL LINE ── */
+  .v-line {
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), rgba(200,151,58,0.35));
+  }
+  .v-line-sm { height: 30px; }
+  .v-line-md { height: 40px; }
+
+  /* ── HORIZONTAL SPAN LINE ── */
+  .h-span {
+    height: 2px;
+    background: var(--gold);
+    opacity: 0.5;
+    border-radius: 2px;
+  }
+
+  /* ── GRANDCHILDREN ROW ── */
+  .gc-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .gc-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* small grandchild card */
+  .person-card.grandchild {
+    width: 175px;
+    padding: 14px 12px 12px;
+  }
+  .person-card.grandchild .person-avatar-placeholder {
+    width: 58px; height: 58px; font-size: 1.5rem;
+  }
+  .person-card.grandchild .person-name { font-size: 1rem; }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin: 50px auto 0;
+    max-width: 700px;
+    padding: 20px 24px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid rgba(200,151,58,0.25);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    color: #3d2008;
+  .legend-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .legend-dot.g0 { background: linear-gradient(135deg,#fff8ec,#fffdf5); border: 2px solid var(--gold); }
+  .legend-dot.g1 { background: white; border: 1px solid rgba(200,151,58,0.4); }
+  .legend-dot.g2 { background: white; border: 1px solid rgba(200,151,58,0.25); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    text-align: center;
+    padding: 30px 20px;
+    color: rgba(255,255,255,0.3);
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── POPUP ── */
+  /* popup built fully in JS with inline styles */
+
+  @media (max-width: 640px) {
+    .couple-wrap { flex-direction: column; }
+    .heart-join { transform: rotate(90deg); }
+    .person-card { width: 170px; }
+    .person-card.root { width: 185px; }
+    .person-card.grandchild { width: 155px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="mandala-ring"></div>
+  <div class="mandala-ring"></div>
+  <div class="hero-label">40th Anniversary</div>
+  <h1 class="hero-title">Our Family Tree</h1>
+  <p class="hero-sub">Roots of love, branches of blessings</p>
+  <a href="index.html" class="back-btn">← Back to Anniversary</a>
+</section>
+
+
+<!-- FAMILY TREE -->
+<section class="tree-section">
+  <div class="tree-container">
+    <div class="tree-visual">
+
+      <!-- ════════════ GENERATION 1 — GRANDPARENTS ════════════ -->
+      <div class="gen-label">Generation I — The Roots</div>
+
+      <div class="level-row">
+        <!-- Grandpa -->
+        <div class="person">
+          <div class="person-card root" data-name="Venkata Ramana" data-role="Grandfather" data-present="assets/gp-grandpa-present.jpg" data-past="assets/gp-grandpa-past.jpg" data-dob="18 August 1963" data-dom="12 March 1986" data-about="The loving patriarch who has guided this family with wisdom, strength, and grace for 40 beautiful years." onclick="cardClick(this)">
+            <div class="person-avatar-placeholder">👴</div>
+            <div class="person-role">Grandfather</div>
+            <div class="person-name">Venkata Ramana</div>
+            <div class="person-year">DOB: 18 Aug 1963</div>
+            <div class="person-year">Married: 12 March 1986</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;padding-top:30px;">
+          <div class="heart-join">❤️</div>
+        </div>
+
+        <!-- Grandma -->
+        <div class="person">
+          <div class="person-card root" data-name="Chaya Devi" data-role="Grandmother" data-present="assets/gp-grandma-present.jpg" data-past="assets/gp-grandma-past.jpg" data-dob="—" data-dom="12 March 1986" data-about="The loving matriarch whose warmth, devotion and endless love have held this family together through every season of life." onclick="cardClick(this)">
+            <div class="person-avatar-placeholder">👵</div>
+            <div class="person-role">Grandmother</div>
+            <div class="person-name">Chaya Devi</div>
+            <div class="person-year">Married: 12 March 1986</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- down line -->
+      <div class="v-line v-line-md"></div>
+
+      <!-- horizontal span to children -->
+      <div style="display:flex; align-items:flex-start; justify-content:center; width:100%; max-width:600px; gap:0;">
+        <div class="v-line v-line-sm" style="margin-left:auto; margin-right:auto;"></div>
+      </div>
+
+      <!-- ════════════ GENERATION 2 — CHILDREN ════════════ -->
+      <div class="gen-label" style="margin-top:8px;">Generation II — The Branches</div>
+
+      <!-- horizontal line connecting two children branches -->
+      <div style="display:flex; align-items:flex-start; justify-content:center; width:100%; max-width:580px; position:relative;">
+        <div class="h-span" style="width:300px; position:absolute; top:0; left:50%; transform:translateX(-50%);"></div>
+      </div>
+
+      <div class="level-row" style="align-items:flex-start; gap:48px; margin-top:0;">
+
+        <!-- ── CHILD 1: HYNDAVI ── -->
+        <div class="branch-group">
+
+          <!-- Hyndavi + Srinivasa Rao couple -->
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="v-line v-line-sm"></div>
+            <div class="couple-wrap">
+              <div class="person-card" data-name="Hyndavi" data-role="Daughter" data-present="assets/hyndavi-present.jpg" data-past="assets/hyndavi-past.jpg" data-dob="20 December 1986" data-dom="22 May 2002" data-about="Eldest daughter of the family. Married Srinivasa Rao in 2002. Blessed with two wonderful sons." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👩</div>
+                <div class="person-role">Daughter</div>
+                <div class="person-name">Hyndavi</div>
+                <div class="person-year">DOB: 20 Dec 1986</div>
+                <div class="person-year">Married: 22 May 2002</div>
+              </div>
+              <div class="heart-join" style="margin:0 -2px;">💍</div>
+              <div class="person-card" data-name="Srinivasa Rao" data-role="Son-in-law" data-present="assets/srinivasa-rao-present.jpg" data-past="assets/srinivasa-rao-past.jpg" data-dob="11 May 1976" data-dom="22 May 2002" data-about="Loving husband of Hyndavi. Joined the family in 2002. A wonderful father to Venkata Siva Rama Krishna and Koushik." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👨</div>
+                <div class="person-role">Son-in-law</div>
+                <div class="person-name">Srinivasa Rao</div>
+                <div class="person-year">DOB: 11 May 1976</div>
+                <div class="person-year">Married: 22 May 2002</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- down to grandchildren -->
+          <div class="v-line v-line-sm"></div>
+
+          <!-- horizontal span for 2 grandchildren -->
+          <div style="width:200px; height:2px; background:linear-gradient(to right,transparent,var(--gold),transparent); opacity:0.6;"></div>
+
+          <!-- Grandchildren of Hyndavi -->
+          <div class="gc-row" style="margin-top:0;">
+            <div class="gc-item">
+              <div class="v-line v-line-sm"></div>
+              <div class="person-card grandchild" data-name="Venkata Siva Rama Krishna" data-role="1st Grandchild" data-present="assets/gc1-present.jpg" data-past="assets/gc1-past.jpg" data-dob="03 November 2003" data-dom="—" data-about="1st grandchild, born to Hyndavi and Srinivasa Rao. The eldest among all grandchildren, loved dearly by the whole family." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👦</div>
+                <div class="person-role">Grandchild</div>
+                <div class="person-name">Venkata Siva Rama Krishna</div>
+                <div class="person-year">DOB: 03 Nov 2003</div>
+              </div>
+            </div>
+            <div class="gc-item">
+              <div class="v-line v-line-sm"></div>
+              <div class="person-card grandchild" data-name="Koushik" data-role="2nd Grandchild" data-present="assets/gc2-present.jpg" data-past="assets/gc2-past.jpg" data-dob="15 March 2007" data-dom="—" data-about="2nd grandchild, born to Hyndavi and Srinivasa Rao. Full of energy, joy, and laughter wherever he goes." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👦</div>
+                <div class="person-role">Grandchild</div>
+                <div class="person-name">Koushik</div>
+                <div class="person-year">DOB: 15 Mar 2007</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── CHILD 2: PAVAN KUMAR ── -->
+        <div class="branch-group">
+
+          <!-- Pavan Kumar + Prasanthi couple -->
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="v-line v-line-sm"></div>
+            <div class="couple-wrap">
+              <div class="person-card" data-name="Pavan Kumar" data-role="Son" data-present="assets/pavan-kumar-present.jpg" data-past="assets/pavan-kumar-past.jpg" data-dob="18 November 1987" data-dom="2014" data-about="Youngest son of the family. Married Prasanthi in 2014. Blessed with two wonderful children, Shre Kavvyah and Chetan Sai." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👨</div>
+                <div class="person-role">Son</div>
+                <div class="person-name">Pavan Kumar</div>
+                <div class="person-year">DOB: 18 Nov 1987</div>
+                <div class="person-year">Married: 2014</div>
+              </div>
+              <div class="heart-join" style="margin:0 -2px;">💍</div>
+              <div class="person-card" data-name="Prasanthi" data-role="Daughter-in-law" data-present="assets/prasanthi-present.jpg" data-past="assets/prasanthi-past.jpg" data-dob="—" data-dom="2014" data-about="Loving wife of Pavan Kumar. Joined the family in 2014. A wonderful mother to Shre Kavvyah and Chetan Sai." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👩</div>
+                <div class="person-role">Daughter-in-law</div>
+                <div class="person-name">Prasanthi</div>
+                <div class="person-year">Married: 2014</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- down to grandchildren -->
+          <div class="v-line v-line-sm"></div>
+
+          <!-- horizontal span for 2 grandchildren -->
+          <div style="width:200px; height:2px; background:linear-gradient(to right,transparent,var(--gold),transparent); opacity:0.6;"></div>
+
+          <!-- Grandchildren of Pavan Kumar -->
+          <div class="gc-row" style="margin-top:0;">
+            <div class="gc-item">
+              <div class="v-line v-line-sm"></div>
+              <div class="person-card grandchild" data-name="Shre Kavvyah" data-role="3rd Grandchild" data-present="assets/gc3-present.jpg" data-past="assets/gc3-past.jpg" data-dob="27 February 2015" data-dom="—" data-about="3rd grandchild, born to Pavan Kumar and Prasanthi. Fills every room with her radiant smile and cheerful spirit." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👧</div>
+                <div class="person-role">Grandchild</div>
+                <div class="person-name">Shre Kavvyah</div>
+                <div class="person-year">DOB: 27 Feb 2015</div>
+              </div>
+            </div>
+            <div class="gc-item">
+              <div class="v-line v-line-sm"></div>
+              <div class="person-card grandchild" data-name="Chetan Sai" data-role="4th Grandchild" data-present="assets/gc4-present.jpg" data-past="assets/gc4-past.jpg" data-dob="13 August 2017" data-dom="—" data-about="4th grandchild, born to Pavan Kumar and Prasanthi. The youngest star in the family constellation, adored by all." onclick="cardClick(this)">
+                <div class="person-avatar-placeholder">👦</div>
+                <div class="person-role">Grandchild</div>
+                <div class="person-name">Chetan Sai</div>
+                <div class="person-year">DOB: 13 Aug 2017</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- end child 2 -->
+
+      </div>
+      <!-- end gen 2 row -->
+
+    </div>
+    <!-- end tree visual -->
+
+    <!-- LEGEND -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot g0">👑</div>
+        <span>Grandparents (Generation I)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot g1">👨</div>
+        <span>Children &amp; Spouses (Generation II)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot g2">👶</div>
+        <span>Grandchildren (Generation III)</span>
+      </div>
+      <div class="legend-item">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1rem;">❤️</div>
+        <span>Married Couple</span>
+      </div>
+    </div>
+
+    <!-- count summary -->
+    <div style="text-align:center; margin-top:40px;">
+      <div style="display:flex; justify-content:center; gap:36px; flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-family:'Cinzel Decorative',serif; font-size:2rem; color:var(--gold);">2</div>
+          <div style="font-size:1rem; letter-spacing:0.2em; color:#3d2008; font-weight:400; text-transform:uppercase;">Children</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Cinzel Decorative',serif; font-size:2rem; color:var(--gold);">2</div>
+          <div style="font-size:1rem; letter-spacing:0.2em; color:#3d2008; font-weight:400; text-transform:uppercase;">Spouses</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Cinzel Decorative',serif; font-size:2rem; color:var(--gold);">4</div>
+          <div style="font-size:1rem; letter-spacing:0.2em; color:#3d2008; font-weight:400; text-transform:uppercase;">Grandchildren</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Cinzel Decorative',serif; font-size:2rem; color:var(--gold);">8</div>
+          <div style="font-size:1rem; letter-spacing:0.2em; color:#3d2008; font-weight:400; text-transform:uppercase;">Total Members</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with <span>❤️</span> to celebrate a lifetime of love &nbsp;✦&nbsp; <span>40th Anniversary 2026</span></p>
+</footer>
+
+
+<!-- ══ PROFILE POPUP — built & injected by JS ══ -->
+<script>
+  function cardClick(el) {
+    openPopup({
+      name:         el.getAttribute('data-name')    || '',
+      role:         el.getAttribute('data-role')    || '',
+      presentPhoto: el.getAttribute('data-present') || '',
+      pastPhoto:    el.getAttribute('data-past')    || '',
+      dob:          el.getAttribute('data-dob')     || '—',
+      dom:          el.getAttribute('data-dom')     || '—',
+      about:        el.getAttribute('data-about')   || '',
+    });
+  }
+
+  function openPopup(data) {
+    // remove any existing popup
+    const old = document.getElementById('ppModal');
+    if (old) old.remove();
+
+    // build overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'ppModal';
+    overlay.style.cssText = [
+      'position:fixed',
+      'top:0','left:0',
+      'width:100vw','height:100vh',
+      'z-index:2147483647',
+      'background:rgba(10,4,1,0.93)',
+      'display:flex',
+      'align-items:center',
+      'justify-content:center',
+      'padding:16px',
+      'box-sizing:border-box',
+      'overflow-y:auto',
+    ].join(';');
+
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) closePopup();
+    });
+
+    // build box
+    const box = document.createElement('div');
+    box.style.cssText = [
+      'background:#fff',
+      'border-radius:18px',
+      'width:100%',
+      'max-width:580px',
+      'max-height:88vh',
+      'overflow-y:auto',
+      'box-shadow:0 50px 120px rgba(0,0,0,0.85)',
+      'border:1px solid rgba(200,151,58,0.5)',
+      'position:relative',
+      'font-family:Lato,sans-serif',
+      'animation:ppIn 0.38s cubic-bezier(0.34,1.56,0.64,1)',
+    ].join(';');
+
+    // inject keyframe once
+    if (!document.getElementById('ppKeyframe')) {
+      const st = document.createElement('style');
+      st.id = 'ppKeyframe';
+      st.textContent = '@keyframes ppIn{from{opacity:0;transform:scale(0.75) translateY(40px)}to{opacity:1;transform:scale(1) translateY(0)}}';
+      document.head.appendChild(st);
+    }
+
+    // close button
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕';
+    closeBtn.style.cssText = [
+      'position:absolute','top:12px','right:12px',
+      'width:36px','height:36px',
+      'border-radius:50%',
+      'background:rgba(43,26,14,0.88)',
+      'border:1.5px solid #c8830a',
+      'color:#e8c97a',
+      'font-size:1rem',
+      'cursor:pointer',
+      'display:flex','align-items:center','justify-content:center',
+      'z-index:10',
+      'line-height:1',
+    ].join(';');
+    closeBtn.onclick = closePopup;
+    box.appendChild(closeBtn);
+
+    // ── TWO PHOTOS ──
+    const photos = document.createElement('div');
+    photos.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;height:230px;border-radius:18px 18px 0 0;overflow:hidden;';
+
+    photos.appendChild(buildPhotoSlot(data.presentPhoto, '📷', 'Present', true));
+    photos.appendChild(buildPhotoSlot(data.pastPhoto,    '🕰️', 'Past / Childhood', false));
+    box.appendChild(photos);
+
+    // ── GOLD DIVIDER ──
+    const divider = document.createElement('div');
+    divider.style.cssText = 'height:4px;background:linear-gradient(to right,#fdf5e4,#c8830a,#e8c97a,#c8830a,#fdf5e4);';
+    box.appendChild(divider);
+
+    // ── BODY ──
+    const body = document.createElement('div');
+    body.style.cssText = 'padding:24px 28px 28px;background:#fef9f0;border-radius:0 0 18px 18px;';
+
+    // name
+    const name = document.createElement('div');
+    name.textContent = data.name || '—';
+    name.style.cssText = "font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:#2b1a0e;line-height:1.2;margin-bottom:6px;";
+    body.appendChild(name);
+
+    // role badge
+    const role = document.createElement('div');
+    role.textContent = data.role || '—';
+    role.style.cssText = [
+      "display:inline-block",
+      "font-family:'Cinzel Decorative',serif",
+      "font-size:0.62rem",
+      "letter-spacing:0.22em",
+      "color:#5a2a08",
+      "text-transform:uppercase",
+      "background:#fdf5e4",
+      "border:1px solid rgba(200,151,58,0.4)",
+      "padding:4px 14px",
+      "border-radius:100px",
+      "margin-bottom:20px",
+    ].join(';');
+    body.appendChild(role);
+
+    // info cards
+    const cards = document.createElement('div');
+    cards.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;';
+
+    [
+      { label: 'Date of Birth',    val: data.dob || '—' },
+      { label: 'Date of Marriage', val: data.dom || 'Not Applicable' },
+    ].forEach(function(f) {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:#fff;border:1px solid rgba(200,151,58,0.25);border-left:3px solid #c8830a;border-radius:10px;padding:12px 16px;';
+      card.innerHTML = `
+        <div style="font-family:'Cinzel Decorative',serif;font-size:0.55rem;letter-spacing:0.2em;color:#c8830a;text-transform:uppercase;margin-bottom:4px;">${f.label}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:#2b1a0e;">${f.val}</div>
+      `;
+      cards.appendChild(card);
+    });
+    body.appendChild(cards);
+
+    // about
+    const about = document.createElement('div');
+    about.style.cssText = 'background:#fff;border:1px solid rgba(200,151,58,0.2);border-left:3px solid #e8c97a;border-radius:10px;padding:14px 16px;font-family:\'Cormorant Garamond\',serif;font-size:1.05rem;line-height:1.75;color:#3a1c08;';
+    about.textContent = (data.about ? '✦  ' + data.about : '');
+    body.appendChild(about);
+
+    box.appendChild(body);
+    overlay.appendChild(box);
+
+    // inject into body as last child — guaranteed top of stack
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function buildPhotoSlot(src, fallbackIcon, label, borderRight) {
+    const slot = document.createElement('div');
+    slot.style.cssText = [
+      'position:relative',
+      'overflow:hidden',
+      'background:linear-gradient(135deg,#ead7b2,#c9a86c)',
+      borderRight ? 'border-right:3px solid #fff' : '',
+    ].join(';');
+
+    if (src) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = label;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      img.onerror = function() {
+        slot.removeChild(img);
+        slot.insertBefore(makePlaceholder(fallbackIcon), slot.firstChild);
+      };
+      slot.appendChild(img);
+    } else {
+      slot.appendChild(makePlaceholder(fallbackIcon));
+    }
+
+    const lbl = document.createElement('div');
+    lbl.textContent = label;
+    lbl.style.cssText = [
+      'position:absolute','bottom:0','left:0','right:0',
+      'padding:28px 10px 9px',
+      'background:linear-gradient(to top,rgba(30,12,2,0.80),transparent)',
+      'color:#fff',
+      "font-family:'Cinzel Decorative',serif",
+      'font-size:0.6rem',
+      'letter-spacing:0.22em',
+      'text-transform:uppercase',
+      'text-align:center',
+      'pointer-events:none',
+    ].join(';');
+    slot.appendChild(lbl);
+
+    return slot;
+  }
+
+  function makePlaceholder(icon) {
+    const ph = document.createElement('div');
+    ph.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#ead7b2,#c9a86c);';
+    ph.innerHTML = `<div style="font-size:3.2rem;opacity:0.4;">${icon}</div><p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:#2b1a0e;opacity:0.55;">Photo coming soon</p>`;
+    return ph;
+  }
+
+  function closePopup() {
+    const modal = document.getElementById('ppModal');
+    if (modal) modal.remove();
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePopup();
+  });
+</script>
+
+
+
+<script>window.onload = function(){ window.scrollTo(0,0); };</script>
+</body>
+</html>
