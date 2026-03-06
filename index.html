@@ -24,7 +24,7 @@
     color: var(--deep);
     font-family: 'Lato', sans-serif;
     font-weight: 300;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body::before {
@@ -486,8 +486,411 @@
 </head>
 <body>
 
+<!-- ══ MAVIDI TORANALU ══ -->
+<style>
+  #torana {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 110px;
+    z-index: 99990;
+    pointer-events: none;
+    background: transparent;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  #torana.hidden {
+    opacity: 0;
+    transform: translateY(-110px);
+    pointer-events: none;
+  }
+
+  /* rope bar full width */
+  #tor-rope {
+    position: absolute;
+    top: 14px;
+    left: 0; right: 0;
+    height: 10px;
+    background: linear-gradient(to right,
+      #5D3A1A 0%, #C8830A 10%, #8D5524 25%,
+      #C8830A 40%, #5D3A1A 50%,
+      #C8830A 60%, #8D5524 75%,
+      #C8830A 90%, #5D3A1A 100%);
+    border-radius: 5px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5),
+                inset 0 2px 3px rgba(255,220,80,0.3);
+  }
+
+  /* left bracket */
+  #tor-bl {
+    position: absolute;
+    top: 0; left: 0;
+    width: 18px; height: 88px;
+    background: linear-gradient(to bottom, #FFD54F, #8D5524, #5D3A1A);
+    border-radius: 0 0 4px 4px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.4);
+  }
+  /* right bracket */
+  #tor-br {
+    position: absolute;
+    top: 0; right: 0;
+    width: 18px; height: 88px;
+    background: linear-gradient(to bottom, #FFD54F, #8D5524, #5D3A1A);
+    border-radius: 0 0 4px 4px;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.4);
+  }
+
+  /* LEFT clusters slide from left */
+  #tor-left {
+    position: absolute;
+    top: 0; left: 0;
+    width: 50%;
+    height: 110px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-left: 22px;
+    padding-right: 10px;
+    transform: translateX(-100%);
+    animation: slideL 1.4s cubic-bezier(0.22,1,0.36,1) forwards 0.3s;
+  }
+  /* RIGHT clusters slide from right */
+  #tor-right {
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 110px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-right: 22px;
+    padding-left: 10px;
+    transform: translateX(100%);
+    animation: slideR 1.4s cubic-bezier(0.22,1,0.36,1) forwards 0.3s;
+  }
+  @keyframes slideL { to { transform: translateX(0); } }
+  @keyframes slideR { to { transform: translateX(0); } }
+
+  /* center ornament drops in */
+  #tor-center {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-130px);
+    animation: dropC 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards 1.6s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  @keyframes dropC { to { transform: translateX(-50%) translateY(0); } }
+
+  /* individual cluster */
+  .tc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-top: 4px;
+  }
+
+  /* string from rope to leaves */
+  .tc-string {
+    width: 2px;
+    background: linear-gradient(to bottom, #C8830A, #795548);
+    border-radius: 1px;
+  }
+
+  /* leaf pair */
+  .tc-leaves {
+    display: flex;
+    align-items: flex-start;
+    gap: 2px;
+    animation: leafSway 3s ease-in-out infinite;
+    transform-origin: 50% 0;
+  }
+  .tc:nth-child(2n) .tc-leaves { animation-duration: 3.6s; animation-direction: reverse; }
+  .tc:nth-child(3n) .tc-leaves { animation-duration: 2.8s; }
+  @keyframes leafSway {
+    0%,100% { transform: rotate(-7deg); }
+    50%      { transform: rotate(7deg);  }
+  }
+
+  /* single leaf — mango leaf shape using border-radius */
+  .leaf {
+    width: 14px;
+    height: 38px;
+    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+    position: relative;
+    box-shadow: inset 1px 2px 4px rgba(255,255,255,0.2),
+                0 2px 4px rgba(0,0,0,0.3);
+  }
+  .leaf::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 10%;
+    transform: translateX(-50%);
+    width: 1px; height: 70%;
+    background: rgba(255,255,255,0.3);
+    border-radius: 1px;
+  }
+  .leaf-l { transform: rotate(-25deg); transform-origin: bottom center; }
+  .leaf-r { transform: rotate(25deg);  transform-origin: bottom center; }
+
+  .leaf-a { background: linear-gradient(160deg, #66BB6A, #2E7D32, #1B5E20); }
+  .leaf-b { background: linear-gradient(160deg, #81C784, #388E3C, #1B5E20); }
+  .leaf-c { background: linear-gradient(160deg, #A5D6A7, #43A047, #2E7D32); }
+
+  /* mango fruit */
+  .mango {
+    width: 20px;
+    height: 26px;
+    border-radius: 50% 50% 40% 40% / 55% 55% 45% 45%;
+    background: radial-gradient(ellipse at 38% 30%, #FFE566, #FFA000 55%, #D84315);
+    box-shadow: inset -2px -3px 6px rgba(0,0,0,0.25),
+                0 3px 6px rgba(0,0,0,0.3);
+    position: relative;
+    margin-top: 2px;
+  }
+  .mango::before {
+    content: '';
+    position: absolute;
+    top: -6px; left: 50%;
+    transform: translateX(-50%);
+    width: 3px; height: 8px;
+    background: #2E7D32;
+    border-radius: 2px;
+  }
+  .mango::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 4px;
+    width: 5px; height: 8px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 50%;
+    transform: rotate(-20deg);
+  }
+
+  /* flower emoji */
+  .tc-flower {
+    font-size: 18px;
+    line-height: 1;
+    margin-top: 4px;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+  }
+
+  /* center big mango */
+  #tor-center .tc-knot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #FFD54F, #C8830A);
+    border: 2px solid #FFD54F;
+    box-shadow: 0 0 10px rgba(200,131,10,0.6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: white;
+    margin-top: 9px;
+    z-index: 2;
+  }
+  #tor-center .tc-stem {
+    width: 3px; height: 18px;
+    background: #2E7D32;
+    border-radius: 2px;
+  }
+  #tor-center .big-mango {
+    width: 44px; height: 56px;
+    border-radius: 50% 50% 42% 42% / 55% 55% 45% 45%;
+    background: radial-gradient(ellipse at 38% 28%, #FFE566, #FFA000 50%, #BF360C);
+    box-shadow: inset -3px -5px 10px rgba(0,0,0,0.3),
+                0 6px 18px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  #tor-center .big-mango::before {
+    content: '';
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    width: 5px; height: 12px;
+    background: #1B5E20;
+    border-radius: 3px;
+  }
+  #tor-center .big-mango::after {
+    content: '';
+    position: absolute;
+    top: 6px; left: 8px;
+    width: 10px; height: 16px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 50%;
+    transform: rotate(-25deg);
+  }
+  /* big leaf behind mango -->*/
+  #tor-center .big-leaf-wrap {
+    position: absolute;
+    top: -8px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 2px;
+  }
+  #tor-center .big-leaf {
+    width: 16px; height: 42px;
+    background: linear-gradient(160deg, #81C784, #2E7D32, #1B5E20);
+    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+  }
+  #tor-center .big-leaf:first-child { transform: rotate(-30deg); transform-origin: bottom center; }
+  #tor-center .big-leaf:last-child  { transform: rotate(30deg);  transform-origin: bottom center; }
+</style>
+
+<div id="torana">
+  <!-- rope + brackets always visible underneath -->
+  <div id="tor-rope"></div>
+  <div id="tor-bl"></div>
+  <div id="tor-br"></div>
+
+  <!-- LEFT clusters -->
+  <div id="tor-left">
+    <!-- c1 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:12px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-a leaf-l"></div>
+        <div class="leaf leaf-b leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+    <!-- c2 flower -->
+    <div class="tc">
+      <div class="tc-string" style="height:16px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-c leaf-l"></div>
+        <div class="leaf leaf-a leaf-r"></div>
+      </div>
+      <div class="tc-flower">🌸</div>
+    </div>
+    <!-- c3 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:10px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-b leaf-l"></div>
+        <div class="leaf leaf-c leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+    <!-- c4 flower -->
+    <div class="tc">
+      <div class="tc-string" style="height:18px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-a leaf-l"></div>
+        <div class="leaf leaf-b leaf-r"></div>
+      </div>
+      <div class="tc-flower">🌼</div>
+    </div>
+    <!-- c5 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:8px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-c leaf-l"></div>
+        <div class="leaf leaf-a leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+    <!-- c6 flower -->
+    <div class="tc">
+      <div class="tc-string" style="height:14px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-b leaf-l"></div>
+        <div class="leaf leaf-c leaf-r"></div>
+      </div>
+      <div class="tc-flower">🌺</div>
+    </div>
+    <!-- c7 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:11px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-a leaf-l"></div>
+        <div class="leaf leaf-b leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT clusters (mirror) -->
+  <div id="tor-right">
+    <!-- c1 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:11px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-a leaf-l"></div>
+        <div class="leaf leaf-b leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+    <!-- c2 flower -->
+    <div class="tc">
+      <div class="tc-string" style="height:14px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-c leaf-l"></div>
+        <div class="leaf leaf-a leaf-r"></div>
+      </div>
+      <div class="tc-flower">🌺</div>
+    </div>
+    <!-- c3 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:8px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-b leaf-l"></div>
+        <div class="leaf leaf-c leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+    <!-- c4 flower -->
+    <div class="tc">
+      <div class="tc-string" style="height:18px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-a leaf-l"></div>
+        <div class="leaf leaf-b leaf-r"></div>
+      </div>
+      <div class="tc-flower">🌼</div>
+    </div>
+    <!-- c5 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:10px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-c leaf-l"></div>
+        <div class="leaf leaf-a leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+    <!-- c6 flower -->
+    <div class="tc">
+      <div class="tc-string" style="height:16px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-b leaf-l"></div>
+        <div class="leaf leaf-c leaf-r"></div>
+      </div>
+      <div class="tc-flower">🌸</div>
+    </div>
+    <!-- c7 mango -->
+    <div class="tc">
+      <div class="tc-string" style="height:12px;"></div>
+      <div class="tc-leaves">
+        <div class="leaf leaf-a leaf-l"></div>
+        <div class="leaf leaf-b leaf-r"></div>
+      </div>
+      <div class="mango"></div>
+    </div>
+  </div>
+
+  <!-- CENTER drops in -->
+  <div id="tor-center">
+    <div class="tc-knot">✦</div>
+    <div class="tc-stem"></div>
+    <div style="position:relative;">
+      <div class="big-leaf-wrap">
+        <div class="big-leaf"></div>
+        <div class="big-leaf"></div>
+      </div>
+      <div class="big-mango"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ── HERO ── -->
-<section class="hero">
+<section class="hero" style="padding-top:120px;">
   <div class="mandala-ring"></div>
   <div class="mandala-ring"></div>
   <div class="mandala-ring"></div>
@@ -612,7 +1015,7 @@
   <div class="timeline">
 
     <div class="timeline-item">
-      <div class="tl-content" onclick="openPopup('assets/tl1.jpeg','1986','The Wedding','Two hearts united in sacred vows. A beautiful ceremony surrounded by loved ones marked the beginning of a lifelong journey together.')">
+      <div class="tl-content" onclick="openPopup('assets/tl1.jpg','1986','The Wedding','Two hearts united in sacred vows. A beautiful ceremony surrounded by loved ones marked the beginning of a lifelong journey together.')">
         <div class="tl-year">1986</div>
         <h4>The Wedding</h4>
         <p>Two hearts united in sacred vows. A beautiful ceremony surrounded by loved ones marked the beginning of a lifelong journey together.</p>
@@ -802,5 +1205,21 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
 </script>
 
+<script>
+  // Hide torana on scroll, show when back at top
+  (function(){
+    var torana = document.getElementById('torana');
+    var lastY  = 0;
+    window.addEventListener('scroll', function(){
+      var y = window.scrollY || window.pageYOffset;
+      if (y > 80) {
+        torana.classList.add('hidden');
+      } else {
+        torana.classList.remove('hidden');
+      }
+      lastY = y;
+    }, { passive: true });
+  })();
+</script>
 </body>
 </html>
