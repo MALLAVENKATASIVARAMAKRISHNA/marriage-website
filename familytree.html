@@ -27,101 +27,78 @@
     min-height: 100vh;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 10px;
-    border: 2px solid var(--gold);
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
+  /* ── TOP NAV ── */
+  .hero {
+    background: linear-gradient(160deg, #2b1a0e 0%, #5a2d12 55%, #2b1a0e 100%);
+    border-bottom: 1px solid rgba(200,151,58,0.35);
+    padding: 10px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: nowrap;
   }
 
-  /* ── HERO ── */
-  .hero {
-    background: linear-gradient(160deg, #2b1a0e 0%, #5a2d12 50%, #2b1a0e 100%);
-    padding: 80px 20px 60px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,151,58,0.15) 0%, transparent 70%);
-  }
-  .mandala-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(200,151,58,0.25);
-    animation: spin-slow linear infinite;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .mandala-ring:nth-child(1) { width: 420px; height: 420px; animation-duration: 60s; }
-  .mandala-ring:nth-child(2) { width: 300px; height: 300px; animation-duration: 40s; animation-direction: reverse; border-style: dashed; }
-  @keyframes spin-slow { to { transform: translate(-50%,-50%) rotate(360deg); } }
 
   .hero-label {
     font-family: 'Cinzel Decorative', serif;
-    font-size: 1rem;
-    letter-spacing: 0.45em;
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
     color: var(--gold);
     text-transform: uppercase;
-    margin-bottom: 14px;
-    position: relative;
-    opacity: 0;
-    animation: fadeUp 0.9s ease forwards 0.3s;
+    line-height: 1.1;
   }
-  .hero-label::before, .hero-label::after { content: '✦'; margin: 0 10px; opacity: 0.6; }
 
   .hero-title {
     font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(0.9rem, 3.8vw, 1.45rem);
     color: var(--gold-light);
-    letter-spacing: 0.05em;
-    position: relative;
-    opacity: 0;
-    animation: fadeUp 0.9s ease forwards 0.5s;
-    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .hero-sub {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-size: clamp(1rem, 2.5vw, 1.4rem);
-    color: rgba(255,255,255,0.6);
-    position: relative;
-    opacity: 0;
-    animation: fadeUp 0.9s ease forwards 0.7s;
-    margin-bottom: 28px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.1;
   }
   .back-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 3px;
     background: rgba(200,151,58,0.15);
     border: 1px solid rgba(200,151,58,0.45);
     color: var(--gold-light);
     font-family: 'Cinzel Decorative', serif;
-    font-size: 1.1rem;
-    letter-spacing: 0.2em;
+    font-size: 0.5rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 10px 22px;
+    padding: 5px 8px;
     border-radius: 100px;
     text-decoration: none;
     transition: background 0.25s, color 0.25s;
-    position: relative;
-    opacity: 0;
-    animation: fadeUp 0.9s ease forwards 0.9s;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .back-btn:hover { background: var(--gold); color: var(--deep); }
 
-  @keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
-
   /* ══ TREE — SINGLE FRAME FIT ══ */
   .tree-section {
-    padding: 16px 12px 40px;
+    padding: 18px 12px 40px;
     background: var(--gold-pale);
   }
   .tree-container {
@@ -297,6 +274,18 @@
   }
   /* bigger on desktop */
   @media (min-width: 540px) {
+    .hero {
+      padding: 14px 24px;
+      gap: 16px;
+    }
+    .hero-label { font-size: 0.62rem; }
+    .hero-title { font-size: 1.6rem; }
+    .hero-sub { font-size: 0.95rem; }
+    .back-btn {
+      font-size: 0.82rem;
+      letter-spacing: 0.15em;
+      padding: 9px 16px;
+    }
     .tree-container { max-width: 780px; }
     .nc-xl { width: 82px; height: 82px; }
     .nc-md { width: 68px; height: 68px; }
@@ -333,11 +322,11 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="mandala-ring"></div>
-  <div class="mandala-ring"></div>
-  <div class="hero-label">40th Anniversary</div>
-  <h1 class="hero-title">Our Family Tree</h1>
-  <p class="hero-sub">Roots of love, branches of blessings</p>
+  <div class="hero-copy">
+    <div class="hero-label">40th Anniversary</div>
+    <h1 class="hero-title">Our Family Tree</h1>
+    <p class="hero-sub">Roots of love, branches of blessings</p>
+  </div>
   <a href="index.html" class="back-btn">← Back to Anniversary</a>
 </section>
 
