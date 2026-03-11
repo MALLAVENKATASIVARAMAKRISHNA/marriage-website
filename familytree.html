@@ -49,16 +49,6 @@
     min-width: 0;
     flex: 1;
   }
-
-  .hero-label {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 0.5rem;
-    letter-spacing: 0.14em;
-    color: var(--gold);
-    text-transform: uppercase;
-    line-height: 1.1;
-  }
-
   .hero-title {
     font-family: 'Cinzel Decorative', serif;
     font-size: clamp(0.9rem, 3.8vw, 1.45rem);
@@ -138,9 +128,13 @@
     align-items: center;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.35s ease;
   }
   .node:active { transform: scale(0.93); }
+  .node:hover, .node:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.3);
+  }
 
   .nc {
     border-radius: 50%;
@@ -194,6 +188,10 @@
     line-height: 1.2;
     max-width: 68px;
     white-space: normal;
+  }
+  .nl-name-tight {
+    font-size: 0.62rem;
+    max-width: 56px;
   }
 
   /* ── CONNECTORS ── */
@@ -272,13 +270,13 @@
     box-shadow: 0 0 0 2px var(--gold-pale);
     flex-shrink: 0;
   }
+
   /* bigger on desktop */
   @media (min-width: 540px) {
     .hero {
       padding: 14px 24px;
       gap: 16px;
     }
-    .hero-label { font-size: 0.62rem; }
     .hero-title { font-size: 1.6rem; }
     .hero-sub { font-size: 0.95rem; }
     .back-btn {
@@ -291,6 +289,7 @@
     .nc-md { width: 68px; height: 68px; }
     .nc-sm { width: 56px; height: 56px; }
     .nl-name { font-size: 0.78rem; max-width: 80px; }
+    .nl-name-tight { font-size: 0.64rem; max-width: 66px; }
     .nl-role { font-size: 0.44rem; }
     .nl-year { font-size: 0.66rem; }
     .gen2-row { gap: 20px; }
@@ -300,6 +299,13 @@
     .vl-sm { height: 18px; }
     .c-line { width: 18px; }
     .c-ring { width: 26px; height: 26px; font-size: 0.75rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .node, .nc-inner, .gen-badge, .couple-row {
+      transition: none !important;
+      animation: none !important;
+    }
   }
 
     /* ── FOOTER ── */
@@ -323,7 +329,6 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-copy">
-    <div class="hero-label">40th Anniversary</div>
     <h1 class="hero-title">Our Family Tree</h1>
     <p class="hero-sub">Roots of love, branches of blessings</p>
   </div>
@@ -338,34 +343,33 @@
 
   <!-- ══ GEN 1 ══ -->
   <div class="gen-badge-wrap">
-    <div class="gen-badge">Generation I</div>
-    <div class="gen-sub">The Roots</div>
+    <div class="gen-badge">First Generation</div>
   </div>
 
   <div class="couple-row">
-    <div class="node" onclick="cardClick(this)"
+    <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
       data-name="Venkata Ramana" data-role="Grandfather"
       data-present="assets/gp-grandpa-present.jpg" data-past="assets/gp-grandpa-past.jpg"
-      data-dob="18 August 1963" data-dom="12 March 1986"
+      data-dob="18 Aug 1963" data-dom="12 March 1986"
       data-about="The loving patriarch who has guided this family with wisdom, strength, and grace for 40 beautiful years.">
       <div class="nc nc-xl"><div class="nc-inner">
-        <img src="assets/familytree/photo1.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Venkata Ramana"/>
+        <img src="assets/familytree/photo1.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Venkata Ramana"/>
         <div class="fb">👴</div>
       </div></div>
-      <div class="nl"><div class="nl-name">Venkata Ramana</div><div class="nl-role">Grandfather</div><div class="nl-year">DOB: 18 August 1963</div></div>
+      <div class="nl"><div class="nl-name">Venkata Ramana</div><div class="nl-role">Grandfather</div><div class="nl-year">DOB: 18 Aug 1963</div></div>
     </div>
 
     <div style="padding-bottom:22px; display:flex; align-items:center;">
       <div class="c-line"></div><div class="c-ring">💍</div><div class="c-line"></div>
     </div>
 
-    <div class="node" onclick="cardClick(this)"
+    <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
       data-name="Chaya Devi" data-role="Grandmother"
       data-present="assets/gp-grandma-present.jpg" data-past="assets/gp-grandma-past.jpg"
       data-dob="31 May 1968" data-dom="12 March 1986"
       data-about="The loving matriarch whose warmth, devotion and endless love have held this family together through every season of life.">
       <div class="nc nc-xl"><div class="nc-inner">
-        <img src="assets/familytree/photo2.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Chaya Devi"/>
+        <img src="assets/familytree/photo2.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Chaya Devi"/>
         <div class="fb">👵</div>
       </div></div>
       <div class="nl"><div class="nl-name">Chaya Devi</div><div class="nl-role">Grandmother</div><div class="nl-year">DOB: 31 May 1968</div></div>
@@ -378,8 +382,7 @@
 
   <!-- ══ GEN 2 ══ -->
   <div class="gen-badge-wrap">
-    <div class="gen-badge">Generation II</div>
-    <div class="gen-sub">The Branches</div>
+    <div class="gen-badge">Second Generation</div>
   </div>
 
   <div class="gen2-row">
@@ -387,27 +390,27 @@
     <!-- FAMILY 1 -->
     <div class="family-block">
       <div class="couple-row">
-        <div class="node" onclick="cardClick(this)"
+        <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
           data-name="Hyndavi" data-role="Daughter"
           data-present="assets/hyndavi-present.jpg" data-past="assets/hyndavi-past.jpg"
-          data-dob="20 December 1986" data-dom="22 May 2002"
+          data-dob="20 Dec 1986" data-dom="22 May 2002"
           data-about="Eldest daughter of the family. Married Srinivasa Rao in 2002. Blessed with two wonderful sons.">
           <div class="nc nc-md"><div class="nc-inner">
-            <img src="assets/familytree/photo3.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Hyndavi"/>
+            <img src="assets/familytree/photo3.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Hyndavi"/>
             <div class="fb">👩</div>
           </div></div>
-          <div class="nl"><div class="nl-name">Hyndavi</div><div class="nl-role">Daughter</div><div class="nl-year">DOB: 20 December 1986</div></div>
+          <div class="nl"><div class="nl-name">Hyndavi</div><div class="nl-role">Daughter</div><div class="nl-year">DOB: 20 Dec 1986</div></div>
         </div>
         <div style="padding-bottom:18px;display:flex;align-items:center;">
           <div class="c-line"></div><div class="c-ring" style="font-size:0.5rem;">💍</div><div class="c-line"></div>
         </div>
-        <div class="node" onclick="cardClick(this)"
+        <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
           data-name="Srinivasa Rao" data-role="Son-in-law"
           data-present="assets/srinivasa-rao-present.jpg" data-past="assets/srinivasa-rao-past.jpg"
           data-dob="11 May 1976" data-dom="22 May 2002"
           data-about="Loving husband of Hyndavi. Joined the family in 2002. A wonderful father to Venkata Siva Rama Krishna and Koushik.">
           <div class="nc nc-md"><div class="nc-inner">
-            <img src="assets/familytree/photo4.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Srinivasa Rao"/>
+            <img src="assets/familytree/photo4.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Srinivasa Rao"/>
             <div class="fb">👨</div>
           </div></div>
           <div class="nl"><div class="nl-name">Srinivasa Rao</div><div class="nl-role">Son-in-law</div><div class="nl-year">DOB: 11 May 1976</div></div>
@@ -417,35 +420,35 @@
       <div class="vline vl-md"></div>
       <div class="hbar" style="width:min(110px,28vw);"></div>
       <div class="gen-badge-wrap" style="margin:5px 0 4px;">
-        <div class="gen-badge" style="font-size:0.4rem;padding:2px 10px;letter-spacing:0.2em;">Generation III</div>
+        <div class="gen-badge" style="font-size:0.4rem;padding:2px 10px;letter-spacing:0.2em;">Third Generation</div>
       </div>
       <div class="gc-row">
         <div class="gc-col">
           <div class="vline vl-sm"></div>
-          <div class="node" onclick="cardClick(this)"
+          <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
             data-name="Venkata Siva Rama Krishna" data-role="1st Grandchild"
             data-present="assets/gc1-present.jpg" data-past="assets/gc1-past.jpg"
-            data-dob="03 November 2003" data-dom="—"
+            data-dob="03 Nov 2003" data-dom="—"
             data-about="1st grandchild, born to Hyndavi and Srinivasa Rao. The eldest among all grandchildren, loved dearly by the whole family.">
             <div class="nc nc-sm"><div class="nc-inner">
-              <img src="assets/familytree/photo5.jpeg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="V.S.R.K"/>
+              <img src="assets/familytree/photo5.jpeg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="V.S.R.K"/>
               <div class="fb" style="font-size:1rem;">👦</div>
             </div></div>
-            <div class="nl"><div class="nl-name" style="font-size:0.58rem;max-width:56px;">V. Siva Rama Krishna</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 03 November 2003</div></div>
+            <div class="nl"><div class="nl-name nl-name-tight">V. Siva Rama Krishna</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 03 Nov 2003</div></div>
           </div>
         </div>
         <div class="gc-col">
           <div class="vline vl-sm"></div>
-          <div class="node" onclick="cardClick(this)"
+          <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
             data-name="Koushik" data-role="2nd Grandchild"
             data-present="assets/gc2-present.jpg" data-past="assets/gc2-past.jpg"
-            data-dob="15 March 2007" data-dom="—"
+            data-dob="15 Mar 2007" data-dom="—"
             data-about="2nd grandchild, born to Hyndavi and Srinivasa Rao. Full of energy, joy, and laughter wherever he goes.">
             <div class="nc nc-sm"><div class="nc-inner">
-              <img src="assets/familytree/photo6.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Koushik"/>
+              <img src="assets/familytree/photo6.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Koushik"/>
               <div class="fb" style="font-size:1rem;">👦</div>
             </div></div>
-            <div class="nl"><div class="nl-name" style="font-size:0.62rem;max-width:56px;">Koushik</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 15 March 2007</div></div>
+            <div class="nl"><div class="nl-name nl-name-tight">Koushik</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 15 Mar 2007</div></div>
           </div>
         </div>
       </div>
@@ -454,65 +457,65 @@
     <!-- FAMILY 2 -->
     <div class="family-block">
       <div class="couple-row">
-        <div class="node" onclick="cardClick(this)"
+        <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
           data-name="Pavan Kumar" data-role="Son"
           data-present="assets/pavan-kumar-present.jpg" data-past="assets/pavan-kumar-past.jpg"
-          data-dob="18 November 1987" data-dom="8 February 2014"
+          data-dob="18 Nov 1987" data-dom="8 February 2014"
           data-about="Youngest son of the family. Married Prasanthi on 8 February 2014. Blessed with two wonderful children, Shre Kavvyah and Chetan Sai.">
           <div class="nc nc-md"><div class="nc-inner">
-            <img src="assets/familytree/photo7.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Pavan Kumar"/>
+            <img src="assets/familytree/photo7.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Pavan Kumar"/>
             <div class="fb">👨</div>
           </div></div>
-          <div class="nl"><div class="nl-name">Pavan Kumar</div><div class="nl-role">Son</div><div class="nl-year">DOB: 18 November 1987</div></div>
+          <div class="nl"><div class="nl-name">Pavan Kumar</div><div class="nl-role">Son</div><div class="nl-year">DOB: 18 Nov 1987</div></div>
         </div>
         <div style="padding-bottom:18px;display:flex;align-items:center;">
           <div class="c-line"></div><div class="c-ring" style="font-size:0.5rem;">💍</div><div class="c-line"></div>
         </div>
-        <div class="node" onclick="cardClick(this)"
+        <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
           data-name="Prasanthi" data-role="Daughter-in-law"
           data-present="assets/prasanthi-present.jpg" data-past="assets/prasanthi-past.jpg"
-          data-dob="29 September 1989" data-dom="8 February 2014"
+          data-dob="29 Sep 1989" data-dom="8 February 2014"
           data-about="Loving wife of Pavan Kumar. Joined the family on 8 February 2014. A wonderful mother to Shre Kavvyah and Chetan Sai.">
           <div class="nc nc-md"><div class="nc-inner">
-            <img src="assets/familytree/photo8.jpeg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Prasanthi"/>
+            <img src="assets/familytree/photo8.jpeg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Prasanthi"/>
             <div class="fb">👩</div>
           </div></div>
-          <div class="nl"><div class="nl-name">Prasanthi</div><div class="nl-role">Dtr-in-law</div><div class="nl-year">DOB: 29 September 1989</div></div>
+          <div class="nl"><div class="nl-name">Prasanthi</div><div class="nl-role">Dtr-in-law</div><div class="nl-year">DOB: 29 Sep 1989</div></div>
         </div>
       </div>
 
       <div class="vline vl-md"></div>
       <div class="hbar" style="width:min(110px,28vw);"></div>
       <div class="gen-badge-wrap" style="margin:5px 0 4px;">
-        <div class="gen-badge" style="font-size:0.4rem;padding:2px 10px;letter-spacing:0.2em;">Generation III</div>
+        <div class="gen-badge" style="font-size:0.4rem;padding:2px 10px;letter-spacing:0.2em;">Third Generation</div>
       </div>
       <div class="gc-row">
         <div class="gc-col">
           <div class="vline vl-sm"></div>
-          <div class="node" onclick="cardClick(this)"
+          <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
             data-name="Shre Kavvyah" data-role="3rd Grandchild"
             data-present="assets/gc3-present.jpg" data-past="assets/gc3-past.jpg"
-            data-dob="27 February 2015" data-dom="—"
+            data-dob="27 Feb 2015" data-dom="—"
             data-about="3rd grandchild, born to Pavan Kumar and Prasanthi. Fills every room with her radiant smile and cheerful spirit.">
             <div class="nc nc-sm"><div class="nc-inner">
-              <img src="assets/familytree/photo9.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Shre Kavvyah"/>
+              <img src="assets/familytree/photo9.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Shre Kavvyah"/>
               <div class="fb" style="font-size:1rem;">👧</div>
             </div></div>
-            <div class="nl"><div class="nl-name" style="font-size:0.62rem;max-width:56px;">Shre Kavvyah</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 27 February 2015</div></div>
+            <div class="nl"><div class="nl-name nl-name-tight">Shre Kavvyah</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 27 Feb 2015</div></div>
           </div>
         </div>
         <div class="gc-col">
           <div class="vline vl-sm"></div>
-          <div class="node" onclick="cardClick(this)"
+          <div class="node" tabindex="0" role="button" onclick="cardClick(this)"
             data-name="Chetan Sai" data-role="4th Grandchild"
             data-present="assets/gc4-present.jpg" data-past="assets/gc4-past.jpg"
-            data-dob="13 August 2017" data-dom="—"
+            data-dob="13 Aug 2017" data-dom="—"
             data-about="4th grandchild, born to Pavan Kumar and Prasanthi. The youngest star in the family constellation, adored by all.">
             <div class="nc nc-sm"><div class="nc-inner">
-              <img src="assets/familytree/photo10.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Chetan Sai"/>
+              <img src="assets/familytree/photo10.jpg" loading=\"lazy\" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="Chetan Sai"/>
               <div class="fb" style="font-size:1rem;">👦</div>
             </div></div>
-            <div class="nl"><div class="nl-name" style="font-size:0.62rem;max-width:56px;">Chetan Sai</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 13 August 2017</div></div>
+            <div class="nl"><div class="nl-name nl-name-tight">Chetan Sai</div><div class="nl-role">Grandchild</div><div class="nl-year">DOB: 13 Aug 2017</div></div>
           </div>
         </div>
       </div>
@@ -526,7 +529,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>Made with <span>❤️</span> to celebrate a lifetime of love &nbsp;✦&nbsp; <span>40th Anniversary 2025</span></p>
+  <p>Made with <span>❤️</span> to celebrate a lifetime of love &nbsp;✦&nbsp; 40th Anniversary <span data-anniversary-year></span></p>
 </footer>
 
 
@@ -545,194 +548,283 @@
   }
 
   function openPopup(data) {
-    // remove any existing popup
     const old = document.getElementById('ppModal');
     if (old) old.remove();
 
-    // build overlay
+    ensurePopupStyles();
+
     const overlay = document.createElement('div');
     overlay.id = 'ppModal';
-    overlay.style.cssText = [
-      'position:fixed',
-      'top:0','left:0',
-      'width:100vw','height:100vh',
-      'z-index:2147483647',
-      'background:rgba(10,4,1,0.93)',
-      'display:flex',
-      'align-items:center',
-      'justify-content:center',
-      'padding:16px',
-      'box-sizing:border-box',
-      'overflow-y:auto',
-    ].join(';');
-
+    overlay.className = 'pp-overlay';
     overlay.addEventListener('click', function(e){
       if (e.target === overlay) closePopup();
     });
 
-    // build box
+    const presentSrc = data.presentPhoto || '';
+    const pastSrc = data.pastPhoto || '';
+
+    const photoPanel = `
+      <div class="pp-photo-grid">
+        <figure class="pp-photo-slot">
+          ${presentSrc ? `<img src="${presentSrc}" loading="lazy" alt="${data.name || 'Present photo'}" onerror="this.closest('.pp-photo-slot').classList.add('pp-missing');this.remove();">` : ''}
+          <div class="pp-fallback">📷</div>
+          <figcaption>Present</figcaption>
+        </figure>
+        <figure class="pp-photo-slot">
+          ${pastSrc ? `<img src="${pastSrc}" loading="lazy" alt="${data.name || 'Past photo'}" onerror="this.closest('.pp-photo-slot').classList.add('pp-missing');this.remove();">` : ''}
+          <div class="pp-fallback">🕰️</div>
+          <figcaption>Then</figcaption>
+        </figure>
+      </div>
+    `;
+
     const box = document.createElement('div');
-    box.style.cssText = [
-      'background:#fff',
-      'border-radius:18px',
-      'width:100%',
-      'max-width:580px',
-      'max-height:88vh',
-      'overflow-y:auto',
-      'box-shadow:0 50px 120px rgba(0,0,0,0.85)',
-      'border:1px solid rgba(200,151,58,0.5)',
-      'position:relative',
-      'font-family:Lato,sans-serif',
-      'animation:ppIn 0.38s cubic-bezier(0.34,1.56,0.64,1)',
-    ].join(';');
+    box.className = 'pp-card';
+    box.innerHTML = `
+      <button class="pp-close" type="button" aria-label="Close">✕</button>
+      ${photoPanel}
+      <div class="pp-content">
+        <div class="pp-kicker">Family Chapter</div>
+        <div class="pp-name">${data.name || '—'}</div>
+        <div class="pp-role">${data.role || '—'}</div>
+        <div class="pp-meta">
+          <div class="pp-meta-item">
+            <div class="pp-meta-label">Date of Birth</div>
+            <div class="pp-meta-value">${data.dob || '—'}</div>
+          </div>
+          <div class="pp-meta-item">
+            <div class="pp-meta-label">Date of Marriage</div>
+            <div class="pp-meta-value">${data.dom || 'Not Applicable'}</div>
+          </div>
+        </div>
+        <div class="pp-about-title">About</div>
+        <p class="pp-about">${data.about ? data.about : ''}</p>
+      </div>
+    `;
+    box.querySelector('.pp-close').onclick = closePopup;
 
-    // inject keyframe once
-    if (!document.getElementById('ppKeyframe')) {
-      const st = document.createElement('style');
-      st.id = 'ppKeyframe';
-      st.textContent = '@keyframes ppIn{from{opacity:0;transform:scale(0.75) translateY(40px)}to{opacity:1;transform:scale(1) translateY(0)}}';
-      document.head.appendChild(st);
-    }
-
-    // close button
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = '✕';
-    closeBtn.style.cssText = [
-      'position:absolute','top:12px','right:12px',
-      'width:36px','height:36px',
-      'border-radius:50%',
-      'background:rgba(43,26,14,0.88)',
-      'border:1.5px solid #c8830a',
-      'color:#e8c97a',
-      'font-size:1rem',
-      'cursor:pointer',
-      'display:flex','align-items:center','justify-content:center',
-      'z-index:10',
-      'line-height:1',
-    ].join(';');
-    closeBtn.onclick = closePopup;
-    box.appendChild(closeBtn);
-
-    // ── TWO PHOTOS ──
-    const photos = document.createElement('div');
-    photos.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;height:230px;border-radius:18px 18px 0 0;overflow:hidden;';
-
-    photos.appendChild(buildPhotoSlot(data.presentPhoto, '📷', 'Present', true));
-    photos.appendChild(buildPhotoSlot(data.pastPhoto,    '🕰️', 'Past / Childhood', false));
-    box.appendChild(photos);
-
-    // ── GOLD DIVIDER ──
-    const divider = document.createElement('div');
-    divider.style.cssText = 'height:4px;background:linear-gradient(to right,#fdf5e4,#c8830a,#e8c97a,#c8830a,#fdf5e4);';
-    box.appendChild(divider);
-
-    // ── BODY ──
-    const body = document.createElement('div');
-    body.style.cssText = 'padding:24px 28px 28px;background:#fef9f0;border-radius:0 0 18px 18px;';
-
-    // name
-    const name = document.createElement('div');
-    name.textContent = data.name || '—';
-    name.style.cssText = "font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:#2b1a0e;line-height:1.2;margin-bottom:6px;";
-    body.appendChild(name);
-
-    // role badge
-    const role = document.createElement('div');
-    role.textContent = data.role || '—';
-    role.style.cssText = [
-      "display:inline-block",
-      "font-family:'Cinzel Decorative',serif",
-      "font-size:0.62rem",
-      "letter-spacing:0.22em",
-      "color:#5a2a08",
-      "text-transform:uppercase",
-      "background:#fdf5e4",
-      "border:1px solid rgba(200,151,58,0.4)",
-      "padding:4px 14px",
-      "border-radius:100px",
-      "margin-bottom:20px",
-    ].join(';');
-    body.appendChild(role);
-
-    // info cards
-    const cards = document.createElement('div');
-    cards.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;';
-
-    [
-      { label: 'Date of Birth',    val: data.dob || '—' },
-      { label: 'Date of Marriage', val: data.dom || 'Not Applicable' },
-    ].forEach(function(f) {
-      const card = document.createElement('div');
-      card.style.cssText = 'background:#fff;border:1px solid rgba(200,151,58,0.25);border-left:3px solid #c8830a;border-radius:10px;padding:12px 16px;';
-      card.innerHTML = `
-        <div style="font-family:'Cinzel Decorative',serif;font-size:0.55rem;letter-spacing:0.2em;color:#c8830a;text-transform:uppercase;margin-bottom:4px;">${f.label}</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:#2b1a0e;">${f.val}</div>
-      `;
-      cards.appendChild(card);
-    });
-    body.appendChild(cards);
-
-    // about
-    const about = document.createElement('div');
-    about.style.cssText = 'background:#fff;border:1px solid rgba(200,151,58,0.2);border-left:3px solid #e8c97a;border-radius:10px;padding:14px 16px;font-family:\'Cormorant Garamond\',serif;font-size:1.05rem;line-height:1.75;color:#3a1c08;';
-    about.textContent = (data.about ? '✦  ' + data.about : '');
-    body.appendChild(about);
-
-    box.appendChild(body);
     overlay.appendChild(box);
-
-    // inject into body as last child — guaranteed top of stack
     document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
   }
 
-  function buildPhotoSlot(src, fallbackIcon, label, borderRight) {
-    const slot = document.createElement('div');
-    slot.style.cssText = [
-      'position:relative',
-      'overflow:hidden',
-      'background:linear-gradient(135deg,#ead7b2,#c9a86c)',
-      borderRight ? 'border-right:3px solid #fff' : '',
-    ].join(';');
-
-    if (src) {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = label;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-      img.onerror = function() {
-        slot.removeChild(img);
-        slot.insertBefore(makePlaceholder(fallbackIcon), slot.firstChild);
-      };
-      slot.appendChild(img);
-    } else {
-      slot.appendChild(makePlaceholder(fallbackIcon));
-    }
-
-    const lbl = document.createElement('div');
-    lbl.textContent = label;
-    lbl.style.cssText = [
-      'position:absolute','bottom:0','left:0','right:0',
-      'padding:28px 10px 9px',
-      'background:linear-gradient(to top,rgba(30,12,2,0.80),transparent)',
-      'color:#fff',
-      "font-family:'Cinzel Decorative',serif",
-      'font-size:0.6rem',
-      'letter-spacing:0.22em',
-      'text-transform:uppercase',
-      'text-align:center',
-      'pointer-events:none',
-    ].join(';');
-    slot.appendChild(lbl);
-
-    return slot;
-  }
-
-  function makePlaceholder(icon) {
-    const ph = document.createElement('div');
-    ph.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#ead7b2,#c9a86c);';
-    ph.innerHTML = `<div style="font-size:3.2rem;opacity:0.4;">${icon}</div><p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:#2b1a0e;opacity:0.55;">Photo coming soon</p>`;
-    return ph;
+  function ensurePopupStyles() {
+    if (document.getElementById('ppPopupStyles')) return;
+    const st = document.createElement('style');
+    st.id = 'ppPopupStyles';
+    st.textContent = `
+      @keyframes ppIn {
+        from { opacity: 0; transform: translateY(22px) scale(0.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      .pp-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        background: rgba(12, 5, 1, 0.86);
+        backdrop-filter: blur(7px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px;
+      }
+      .pp-card {
+        width: min(96vw, 620px);
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 20px;
+        border: 1px solid rgba(200,131,10,0.55);
+        background:
+          radial-gradient(circle at 14% 8%, rgba(255,255,255,0.45), transparent 34%),
+          radial-gradient(circle at 86% 90%, rgba(200,131,10,0.18), transparent 36%),
+          linear-gradient(180deg, #fffefb, #fef7ea 58%, #f7ecd8);
+        box-shadow: 0 40px 100px rgba(0,0,0,0.62);
+        position: relative;
+        animation: ppIn 0.3s ease-out both;
+      }
+      .pp-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.7);
+        background: rgba(0,0,0,0.58);
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.95rem;
+        z-index: 2;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+      .pp-close:hover {
+        transform: scale(1.06);
+        background: rgba(0,0,0,0.75);
+      }
+      .pp-photo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        border-bottom: 1px solid rgba(200,131,10,0.25);
+      }
+      .pp-photo-slot {
+        margin: 0;
+        height: 230px;
+        position: relative;
+        background: linear-gradient(140deg, #ead7b2, #c9a86c);
+        overflow: hidden;
+      }
+      .pp-photo-slot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .pp-fallback {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.4rem;
+        color: rgba(43,26,14,0.58);
+      }
+      .pp-photo-slot.pp-missing .pp-fallback { display: flex; }
+      .pp-photo-slot figcaption {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 20px 10px 8px;
+        text-align: center;
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #fef6e4;
+        background: linear-gradient(to top, rgba(20,8,2,0.82), transparent);
+      }
+      .pp-content {
+        padding: 22px 22px 24px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.72), rgba(254,249,240,0.96)),
+          repeating-linear-gradient(45deg, rgba(200,131,10,0.03) 0, rgba(200,131,10,0.03) 10px, transparent 10px, transparent 20px);
+      }
+      .pp-kicker {
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(200,131,10,0.35);
+        background: rgba(255,246,232,0.75);
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 0.5rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #9a5e18;
+      }
+      .pp-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2rem, 4.9vw, 2.6rem);
+        color: #2b1a0e;
+        line-height: 1.12;
+        margin-bottom: 6px;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.9);
+      }
+      .pp-role {
+        display: inline-block;
+        border-radius: 999px;
+        border: 1px solid rgba(200,131,10,0.42);
+        background: linear-gradient(180deg, #fff6e8, #f5e1bc);
+        padding: 6px 13px;
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #6c3d12;
+        margin-bottom: 18px;
+      }
+      .pp-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .pp-meta-item {
+        border: 1px solid rgba(200,131,10,0.3);
+        border-radius: 11px;
+        background: linear-gradient(180deg, #fff, #fff8ec);
+        padding: 10px 12px;
+        box-shadow: 0 6px 14px rgba(43,26,14,0.08);
+      }
+      .pp-meta-label {
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 0.48rem;
+        letter-spacing: 0.14em;
+        color: #b16b1d;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .pp-meta-value {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.12rem;
+        color: #2b1a0e;
+      }
+      .pp-about-title {
+        margin-bottom: 7px;
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 0.52rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #a26014;
+      }
+      .pp-about {
+        margin: 0;
+        border: 1px solid rgba(200,131,10,0.25);
+        border-radius: 11px;
+        background: linear-gradient(180deg, #fff, #fff8ed);
+        padding: 13px 14px;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.08rem;
+        line-height: 1.72;
+        color: #3a1c08;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+      }
+      .pp-about:empty { display: none; }
+      @media (max-width: 560px) {
+        .pp-overlay { padding: 10px; }
+        .pp-card {
+          width: 100%;
+          max-width: 420px;
+          border-radius: 16px;
+        }
+        .pp-close {
+          top: 8px;
+          right: 8px;
+          width: 32px;
+          height: 32px;
+        }
+        .pp-photo-grid { grid-template-columns: 1fr; }
+        .pp-photo-slot { height: 170px; }
+        .pp-content { padding: 16px 14px 16px; }
+        .pp-name { font-size: clamp(1.55rem, 8vw, 2.05rem); }
+        .pp-role {
+          font-size: 0.52rem;
+          letter-spacing: 0.12em;
+          margin-bottom: 14px;
+        }
+        .pp-meta { grid-template-columns: 1fr; }
+        .pp-meta-item { padding: 9px 10px; }
+        .pp-meta-label { font-size: 0.44rem; }
+        .pp-meta-value { font-size: 0.98rem; }
+        .pp-about-title { margin-bottom: 6px; }
+        .pp-about {
+          font-size: 0.97rem;
+          line-height: 1.6;
+        }
+      }
+    `;
+    document.head.appendChild(st);
   }
 
   function closePopup() {
@@ -744,9 +836,25 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closePopup();
   });
+  document.querySelectorAll('.node').forEach(el => {
+    el.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        cardClick(el);
+      }
+    });
+  });
 </script>
 
 
+
+<script>
+  (function() {
+    document.querySelectorAll('[data-anniversary-year]').forEach(el => {
+      el.textContent = '2026';
+    });
+  })();
+</script>
 
 <script>window.onload = function(){ window.scrollTo(0,0); };</script>
 </body>
