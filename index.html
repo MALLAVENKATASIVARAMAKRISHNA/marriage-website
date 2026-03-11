@@ -1093,7 +1093,7 @@
     filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
   }
 
-  /* center big mango */
+  /* center kalash icon */
   #tor-center .tc-knot {
     width: 22px; height: 22px;
     border-radius: 50%;
@@ -1110,46 +1110,86 @@
     background: #2E7D32;
     border-radius: 2px;
   }
-  #tor-center .big-mango {
-    width: 44px; height: 56px;
-    border-radius: 50% 50% 42% 42% / 55% 55% 45% 45%;
-    background: radial-gradient(ellipse at 38% 28%, #FFE566, #FFA000 50%, #BF360C);
-    box-shadow: inset -3px -5px 10px rgba(0,0,0,0.3),
-                0 6px 18px rgba(0,0,0,0.4);
+  #tor-center .kalash-medallion {
+    width: 72px;
+    height: 78px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
   }
-  #tor-center .big-mango::before {
+  #tor-center .kalash-pot {
+    position: absolute;
+    bottom: 2px;
+    width: 56px;
+    height: 42px;
+    border-radius: 0 0 24px 24px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(122,62,20,0.8);
+    font-size: 18px;
+    background: linear-gradient(180deg, #f0c86e 0%, #d38a2f 55%, #a45a15 100%);
+    border: 2px solid rgba(248, 220, 140, 0.9);
+    box-shadow: inset 0 2px 3px rgba(255,255,255,0.4), inset 0 -3px 5px rgba(96,50,15,0.35);
+  }
+  #tor-center .kalash-pot::before {
     content: '';
     position: absolute;
-    top: -10px; left: 50%;
+    left: 50%;
+    top: 8px;
     transform: translateX(-50%);
-    width: 5px; height: 12px;
-    background: #1B5E20;
-    border-radius: 3px;
+    width: 36px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(120,60,20,0.45);
   }
-  #tor-center .big-mango::after {
-    content: '';
+  #tor-center .kalash-neck {
     position: absolute;
-    top: 6px; left: 8px;
-    width: 10px; height: 16px;
-    background: rgba(255,255,255,0.22);
-    border-radius: 50%;
-    transform: rotate(-25deg);
+    bottom: 40px;
+    width: 30px;
+    height: 11px;
+    border-radius: 8px 8px 4px 4px;
+    background: linear-gradient(180deg, #f5da95, #cf8a35);
+    border: 1px solid rgba(248,220,140,0.8);
+    z-index: 3;
   }
-  /* big leaf behind mango -->*/
-  #tor-center .big-leaf-wrap {
+  #tor-center .kalash-coconut {
     position: absolute;
-    top: -8px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; gap: 2px;
+    bottom: 50px;
+    width: 16px;
+    height: 20px;
+    border-radius: 9px;
+    background: linear-gradient(180deg, #7f4b1f, #5d3515);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+    z-index: 4;
   }
-  #tor-center .big-leaf {
-    width: 16px; height: 42px;
-    background: linear-gradient(160deg, #81C784, #2E7D32, #1B5E20);
-    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+  #tor-center .kalash-leaf {
+    position: absolute;
+    bottom: 50px;
+    width: 14px;
+    height: 28px;
+    border-radius: 60% 60% 40% 40%;
+    background: linear-gradient(160deg, #9ad08e, #3d9447, #1f6128);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.25);
+    z-index: 3;
   }
-  #tor-center .big-leaf:first-child { transform: rotate(-30deg); transform-origin: bottom center; }
-  #tor-center .big-leaf:last-child  { transform: rotate(30deg);  transform-origin: bottom center; }
+  #tor-center .kalash-leaf.l1 { left: 18px; transform: rotate(-24deg); }
+  #tor-center .kalash-leaf.l2 { left: 28px; transform: rotate(-10deg); }
+  #tor-center .kalash-leaf.l3 { right: 28px; transform: rotate(10deg); }
+  #tor-center .kalash-leaf.l4 { right: 18px; transform: rotate(24deg); }
+  #tor-center .kalash-base {
+    position: absolute;
+    bottom: -2px;
+    width: 58px;
+    height: 8px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #c67827, #8f4d14);
+    z-index: 1;
+  }
 </style>
 
 <div id="torana">
@@ -1296,12 +1336,15 @@
   <div id="tor-center">
     <div class="tc-knot">✦</div>
     <div class="tc-stem"></div>
-    <div style="position:relative;">
-      <div class="big-leaf-wrap">
-        <div class="big-leaf"></div>
-        <div class="big-leaf"></div>
-      </div>
-      <div class="big-mango"></div>
+    <div class="kalash-medallion">
+      <div class="kalash-leaf l1"></div>
+      <div class="kalash-leaf l2"></div>
+      <div class="kalash-leaf l3"></div>
+      <div class="kalash-leaf l4"></div>
+      <div class="kalash-coconut"></div>
+      <div class="kalash-neck"></div>
+      <div class="kalash-pot">✶</div>
+      <div class="kalash-base"></div>
     </div>
   </div>
 </div>
