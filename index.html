@@ -14,6 +14,8 @@
     --warm: #7a3e1a;
     --cream: #fef9f0;
     --red: #b03030;
+    --section-space: 116px;
+    --section-space-mobile: 84px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -241,7 +243,7 @@
   }
 
   /* ── COMMON ── */
-  section { padding: 90px 20px; }
+  section { padding: clamp(96px, 10vw, var(--section-space)) 20px; }
 
   .section-label {
     font-family: 'Cinzel Decorative', serif;
@@ -250,7 +252,7 @@
     color: var(--gold);
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
   .section-title {
     font-family: 'Cormorant Garamond', serif;
@@ -258,14 +260,15 @@
     font-weight: 600;
     text-align: center;
     color: var(--deep);
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    line-height: 1.12;
   }
   .divider {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
-    margin: 20px auto 50px;
+    margin: 24px auto 64px;
     max-width: 300px;
   }
   .divider::before,.divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
@@ -274,6 +277,10 @@
 
   /* ── PHOTOS ── */
   .photos-section { background: var(--gold-pale); }
+  .photos-section {
+    padding-top: clamp(100px, 10vw, 126px);
+    padding-bottom: clamp(104px, 10vw, 128px);
+  }
 
   .photos-grid {
     display: grid;
@@ -316,6 +323,10 @@
 
   /* ── POOJA ── */
   .pooja-section { background: #fff; position: relative; overflow: hidden; }
+  .pooja-section {
+    padding-top: clamp(104px, 10.5vw, 132px);
+    padding-bottom: clamp(96px, 9.5vw, 120px);
+  }
   .pooja-section::before { content: '🕉'; position: absolute; font-size: 20rem; opacity: 0.03; top: 50%; left: 50%; transform: translate(-50%,-50%); }
   .pooja-section .section-label,
   .pooja-section .section-title,
@@ -373,6 +384,13 @@
 
   /* ── TIMELINE ── */
   .timeline-section { background: var(--gold-pale); }
+  .timeline-section {
+    padding-top: clamp(44px, 4.8vw, 62px);
+    padding-bottom: clamp(90px, 9vw, 112px);
+  }
+  .timeline-section .divider {
+    margin: 14px auto 34px;
+  }
   .timeline { max-width: 700px; margin: 0 auto; position: relative; padding: 20px 0; }
   .timeline::before {
     content: '';
@@ -494,7 +512,7 @@
     background: linear-gradient(160deg, #2b1a0e, #5a2d12);
     color: white;
     text-align: center;
-    padding: 100px 20px;
+    padding: clamp(104px, 10.5vw, 132px) 20px;
     position: relative;
     overflow: hidden;
   }
@@ -558,6 +576,31 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
+    section {
+      padding: var(--section-space-mobile) 16px;
+    }
+    .section-label {
+      margin-bottom: 12px;
+    }
+    .section-title {
+      margin-bottom: 16px;
+    }
+    .divider {
+      margin: 18px auto 40px;
+    }
+    .pooja-section,
+    .photos-section,
+    .wishes-section {
+      padding-top: 90px;
+      padding-bottom: 90px;
+    }
+    .timeline-section {
+      padding-top: 38px;
+      padding-bottom: 74px;
+    }
+    .timeline-section .divider {
+      margin: 12px auto 24px;
+    }
     .hero {
       padding: 110px 16px 76px;
     }
