@@ -441,12 +441,22 @@
     {
       title: 'Celebration Highlights',
       description: 'Special celebration moments captured and shared on YouTube.',
-      videoId: 'DHu2ZHqBJek'
+      videoId: 'D0UnqGm_miA'
     }
   ];
 
   const tabs = document.querySelectorAll('.tab-btn');
   const panels = document.querySelectorAll('.tab-panel');
+
+  const refreshVideoPlayback = (shouldAutoplay) => {
+    document.querySelectorAll('.video-embed iframe').forEach((frame) => {
+      const baseSrc = frame.dataset.baseSrc;
+      if (!baseSrc) return;
+      frame.src = shouldAutoplay
+        ? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}autoplay=1&mute=1&rel=0`
+        : `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}rel=0`;
+    });
+  };
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -454,6 +464,7 @@
 
       tabs.forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
       panels.forEach((panel) => panel.classList.toggle('is-active', panel.id === targetId));
+      refreshVideoPlayback(targetId === 'videos-panel');
     });
   });
 
@@ -471,7 +482,8 @@
       <article class="video-card">
         <div class="video-embed">
           <iframe
-            src="https://www.youtube-nocookie.com/embed/${video.videoId}"
+            src="https://www.youtube-nocookie.com/embed/${video.videoId}?rel=0"
+            data-base-src="https://www.youtube-nocookie.com/embed/${video.videoId}"
             title="${video.title}"
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
